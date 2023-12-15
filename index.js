@@ -1,10 +1,11 @@
 // TODO: Include packages needed for this application
 const inquirer = require('inquirer');
 const fs = require('fs');
+const {log} = require('console');
 const answerArray = [];
 let readMe;
-console.log('README MAKER');
-console.log('------------');
+log('README MAKER');
+log('------------');
 
 // TODO: Create an array of questions for user input
 const questions = [{
@@ -32,31 +33,12 @@ const questions = [{
     message: 'License:',
     name: 'license',
     choices: [
-        'AFL-3.0',
         'Apache-2.0',
-        'BSD-3-Clause-Clear',
-        'BSD-4-Clause',
+        'BSD-3-Clause',
         'CC-BY-4.0',
-        'CC-BY-SA-4.0',
-        'WTFPL',
-        'ECL-2.0',
-        'EPL-1.0',
-        'EPL-2.0',
-        'EUPL-1.1',
-        'AGPL-3.0',
-        'GPL-3.0',
-        'LGPL-3.0',
-        'ISC',
-        'LPPL-1.3c',
-        'MS-PL',
         'MIT',
-        'MPL-2.0',
-        'OSL-3.0',
-        'PostgreSQL',
-        'OFL-1.1',
-        'NCSA',
+        'MPL 2.0',
         'Unlicense',
-        'Zlib',
     ]
 },
 {
@@ -87,10 +69,20 @@ const questions = [{
 ];
 
 
+const badgeUrls = [
+    '[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)',
+    '[![License](https://img.shields.io/badge/License-BSD_3--Clause-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)',
+    '[![License: CC BY 4.0](https://img.shields.io/badge/License-CC_BY_4.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)',
+    '[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)',
+    '[![License: MPL 2.0](https://img.shields.io/badge/License-MPL_2.0-brightgreen.svg)](https://opensource.org/licenses/MPL-2.0)',
+    '[![License: Unlicense](https://img.shields.io/badge/license-Unlicense-blue.svg)](http://unlicense.org/)',
+]
+
+
 const generateREADMEText = (data) => {
     //capture the right values to insert into README Text
     for (const [field, answer] of Object.entries(data)) {
-        console.log(answer);
+        log(answer);
         answerArray.push(answer);
     }
     let projectTitle = answerArray[0];
@@ -103,9 +95,21 @@ const generateREADMEText = (data) => {
     let githubUsername = answerArray[7];
     let email = answerArray[8];
     let contactInfo = answerArray[9];
+    let badgeUrl = '';
+    let choices = [...questions[4].choices]
+    //set license badge url
+
+    for (let i = 0; i < choices.length; i++) {
+
+        if (choices[i] == license) {
+            log("found badge!");
+            badgeUrl = badgeUrls[i];
+        }
+    }
+
 
     readMe =
-        `# ${projectTitle}\n
+        `# ${projectTitle}      ${badgeUrl}\n
 
 ## Description
 ${description}\n
@@ -129,7 +133,7 @@ ${usageInformation}\n
 
 ## License
 
-${license}\n
+NOTICE THIS REPOSITORY IS USING THE ${license} LICENSE\n
 
 ## Contributing
 
@@ -138,8 +142,6 @@ ${contributing}\n
 ## Tests
 
 ${tests}\n
-
-Please refer to the LICENSE in the repo
 
 ## Questions
 
@@ -164,12 +166,37 @@ function writeToFile(fileName, data) {
 function init() {
     //start it up
     inquirer.prompt(questions).then((response) => {
-        console.log(response);
+        log(response);
         const generatedReadMe = generateREADMEText(response);
 
-        fs.writeFile('README.md', generatedReadMe, (errorMessage) => {
-            errorMessage ? console.log(errorMessage) : console.log("Successully created README.md");
-        });
+
+        //first check if folder for new README is created
+        try {
+            //if the folder does not exist, create it
+            if (!fs.existsSync('./created_content')) {
+                fs.mkdirSync('./created_content');
+            }
+
+
+            if (!fs.existsSync('./created_content/README.md')) {
+                //Read me does not exist yet, write new file in the new folder
+                fs.writeFile('./created_content/README.md', generatedReadMe, (errorMessage) => {
+                    errorMessage ? log(errorMessage) : log("Successully created README.md");
+                });
+            }
+            else {
+                //file already exists, need to overwrite.
+                fs.writeFileSync('./created_content/README.md', generatedReadMe, {
+                    flag: 'w',
+                })
+
+            }
+        }
+        catch (err) {
+            console.error(err);
+        }
+
+
 
     })
 
