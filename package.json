@@ -1,0 +1,14 @@
+{
+  "name": "challenge-module-nine",
+  "version": "1.0.0",
+  "description": "A package intended to help the user create a professional looking README",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Mark Forte",
+  "license": "ISC",
+  "dependencies": {
+    "inquirer": "^8.2.4"
+  }
+}
