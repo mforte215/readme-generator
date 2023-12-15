@@ -2,8 +2,10 @@
 const inquirer = require('inquirer');
 const fs = require('fs');
 const answerArray = [];
+let readMe;
 console.log('README MAKER');
 console.log('------------');
+
 // TODO: Create an array of questions for user input
 const questions = [{
     type: 'input',
@@ -102,53 +104,51 @@ const generateREADMEText = (data) => {
     let email = answerArray[8];
     let contactInfo = answerArray[9];
 
-    const readMe = `# ${projectTitle} 
+    readMe =
+        `# ${projectTitle}\n
 
-    ## Description
+## Description
+${description}\n
 
-    ${description}
-    
-    ## Table of Contents
-    
-    - [Installation](#installation)
-    - [Usage](#usage)
-    - [Credits](#credits)
-    - [License](#license)
-    - [Contributing](#contributing)
-    - [Tests](#tests)
-    - [Questions](#questions)
+## Table of Contents
 
-    
-    ## Installation
-    
-    ${installationInstructions}
-    
-    ## Usage
-    
-    ${usageInformation}
+- [Installation](#installation)
+- [Usage](#usage)
+- [Credits](#credits)
+- [License](#license)
+- [Contributing](#contributing)
+- [Tests](#tests)
+- [Questions](#questions)
 
-    ## License
 
-    ${license}
-    
-    ## Contributing
-    
-    ${contributing}
-    
-    ## Tests
+## Installation
+${installationInstructions}\n
 
-    ${tests}
-    
-    Please refer to the LICENSE in the repo
-    
-    ## Questions
+## Usage
+${usageInformation}\n
 
-    GitHub Username: ${githubUsername}
+## License
 
-    Email: ${email}
+${license}\n
 
-    Additional Contact Information: ${contactInfo}
-    `
+## Contributing
+
+${contributing}\n
+
+## Tests
+
+${tests}\n
+
+Please refer to the LICENSE in the repo
+
+## Questions
+
+GitHub Username: ${githubUsername}\n
+
+Email: ${email}\n
+
+Additional Contact Information: ${contactInfo}\n
+`
 
     return readMe;
 }
