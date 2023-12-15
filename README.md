@@ -8,7 +8,6 @@ The README Generator is a command line javascript program that can be run with n
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Credits](#credits)
 - [License](#license)
 - [Contributing](#contributing)
 - [Tests](#tests)

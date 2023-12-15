@@ -118,7 +118,6 @@ ${description}\n
 
 - [Installation](#installation)
 - [Usage](#usage)
-- [Credits](#credits)
 - [License](#license)
 - [Contributing](#contributing)
 - [Tests](#tests)
